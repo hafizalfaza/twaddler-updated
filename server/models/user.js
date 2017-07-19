@@ -24,6 +24,14 @@ const UserSchema = mongoose.Schema({
         required: true,
         default: Date.now,
     },
+    profilePic: {
+        type: String,
+        required: true,
+        default: 'http://bonniesomerville.nz/wp-content/uploads/2015/08/profile-icon.png'
+    },
+    bio: {
+        type: String,
+    },
     postCount: {
         type: Number,
         required: true,
@@ -35,12 +43,25 @@ const UserSchema = mongoose.Schema({
     following: {
         type: Array,
     },
+    followersCount: {
+        type: Number,
+        required: true,
+        default: 0,
+    },
+    followingCount: {
+        type: Number,
+        required: true,
+        default: 0,
+    },
     notifications: {
         type: Array,
     },
     unreadNotifCount: {
         type: Number,
         default: 0
+    },
+    tempPosts: {
+        type: Array,
     }
 });
 
@@ -57,12 +78,12 @@ export function addUser(newUser, callback){
 }
 
 export function getUserById(id, callback){
-    User.findById(id, callback);
+    User.findById(id, {following: 0, followers: 0, notifications: 0}, callback);
 }
 
 export function getUserByUsernameOrEmail(identifier, callback){
 	const query = [{username: identifier}, {email: identifier}];
 	User.findOne({
 		 $or: query
-	   }, callback);
+	   }, {following: 0, followers: 0, notifications: 0}, callback);
 }

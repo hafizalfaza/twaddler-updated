@@ -56,6 +56,7 @@ app.use(bodyParser.json());
 // Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
+
 initPassport(passport);
 
 app.use(session({secret: 'thebestwebsiteintheworld',

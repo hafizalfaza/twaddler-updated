@@ -15,7 +15,8 @@ class UserPostForm extends Component {
         e.preventDefault();
         const { input } = this.props.newsfeedPage;
         const { user } =  this.props.auth;
-        this.props.onSubmitPost({content: {text: input.textToPost.text, picUrl: input.picUrl}, postedBy: user.data._id});   
+        this.props.onSubmitPost({content: {text: input.textToPost.text, picUrl: input.picUrl}, postedBy: user.data._id, latestPost: this.props.newsfeedPage.posts[0].postedAt});   
+        this.props.clearInterval();
     }
 
     render(){
@@ -33,7 +34,7 @@ class UserPostForm extends Component {
                             onChange={this._handleTyping}
                         />
                     </div>
-                    <div>
+                    <div className="form-group">
                         {input.textToPost.textLen}/140
                         <button className="btn btn-primary btn-md pull-right" disabled={isPosting}>
                             Post

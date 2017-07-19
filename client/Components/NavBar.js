@@ -20,7 +20,7 @@ const NavBar = (props) => {
         <nav className="navbar navbar-inverse">
             <div className="container-fluid">
                 <div className="navbar-header">
-                <a className="navbar-brand" href="#">WebSiteName</a>
+                <a className="navbar-brand" href="#">Twaddler</a>
                 </div>
                 {props.auth.user.token ? userLinks : guestLinks}
                 <form className="navbar-form navbar-left">

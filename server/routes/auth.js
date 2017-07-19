@@ -14,12 +14,12 @@ router.post('/', (req, res, next) => {
 			if(bcrypt.compareSync(password, user.password)){
 				const token = jwt.sign({
 					id: user._id,
-					user: user
+					user: user,
                 }, config.jwtSecret);
                 req.session.userId=user._id;
                 req.session.username=user.username;
                 
-                res.json({token, data: user});
+                res.json({token: 'JWT '+token, data: user});
 			}else{
 				res.status(401).json({errors: {form: 'Invalid credentials'}});
 			}

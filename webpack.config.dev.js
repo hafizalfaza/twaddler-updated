@@ -23,6 +23,13 @@ export default {
                 include: path.join(__dirname, 'client'),
                 loaders: ["react-hot-loader", "babel-loader"],
             },
+
+            {
+				test: /\.(jpe?g|png|gif|svg)$/i,
+				loaders: [
+				  'file-loader'
+				],
+			},
         ]
     },
     resolve: {
