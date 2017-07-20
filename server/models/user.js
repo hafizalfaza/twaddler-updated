@@ -63,6 +63,9 @@ const UserSchema = mongoose.Schema({
     tempPosts: {
         type: Array,
     },
+    tempProfile: {
+        type: Array,
+    },
     isFollowedByCurrentUser: {
         type: Boolean,
         required: true,
@@ -106,15 +109,15 @@ export function getUserByUsernameOrEmail(identifier, callback){
 
 export function updateFollowStatus(users, isFollowing, callback){
     if(isFollowing){
-        User.update({_id: users.userRequested}, {$pull: {followers: users.userRequesting}})
+        User.update({_id: users.userRequested}, {$pull: {followers: users.userRequesting}, $inc: {followersCount: -1}})
         .exec()
-        .then(res => User.update({_id: users.userRequesting}, {$pull: {following: users.userRequested}}))
+        .then(res => User.update({_id: users.userRequesting}, {$pull: {following: users.userRequested}, $inc: {followingCount: -1}}))
         .then(res => User.find({_id: users.userRequested}, {notifications: 0}, callback))
         .catch(err => console.log(err));
     }else{
-        User.update({_id: users.userRequested}, {$addToSet: {followers: users.userRequesting}})
+        User.update({_id: users.userRequested}, {$addToSet: {followers: users.userRequesting}, $inc: {followersCount: 1}})
         .exec()
-        .then(res => User.update({_id: users.userRequesting}, {$addToSet: {following: users.userRequested}}))
+        .then(res => User.update({_id: users.userRequesting}, {$addToSet: {following: users.userRequested}, $inc: {followingCount: -1}}))
         .then(res => User.find({_id: users.userRequested}, {notifications: 0}, callback))
         .catch(err => console.log(err));
     }

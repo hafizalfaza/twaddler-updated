@@ -22,25 +22,48 @@ class NewsfeedList extends Component{
     }
 
     render(){
-        if(this.props.newsfeedPage.posts){
-            const initialPosts = this.props.newsfeedPage.posts.map(post =>
-                <PostContainer 
-                    key={post._id} 
-                    post={post} 
-                    onCommentFocused={this._handleCommentFocused} 
-                    onLikePressed={this._handleLikePressed}
-                    onTypingComment={this._handleTypingComment}
-                    onSubmitComment={this._handleSubmitComment}
-                />
-            )
-            return (        
-                <div>
-                    {initialPosts}
-                </div>
-            )
+        if(this.props.router.location.pathname ==='/' ){
+            if(this.props.newsfeedPage.posts){
+                const posts = this.props.newsfeedPage.posts.map(post =>
+                    <PostContainer 
+                        key={post._id} 
+                        post={post} 
+                        onCommentFocused={this._handleCommentFocused} 
+                        onLikePressed={this._handleLikePressed}
+                        onTypingComment={this._handleTypingComment}
+                        onSubmitComment={this._handleSubmitComment}
+                    />
+                )
+                return (        
+                    <div>
+                        {posts}
+                    </div>
+                )
+            }else{
+                return null;
+            }
         }else{
-            return null;
+             if(this.props.profileData.posts){
+                const posts = this.props.profileData.posts.map(post =>
+                    <PostContainer 
+                        key={post._id} 
+                        post={post} 
+                        onCommentFocused={this._handleCommentFocused} 
+                        onLikePressed={this._handleLikePressed}
+                        onTypingComment={this._handleTypingComment}
+                        onSubmitComment={this._handleSubmitComment}
+                    />
+                )
+                return (        
+                    <div>
+                        {posts}
+                    </div>
+                )
+            }else{
+                return null;
+            }
         }
+        
     }
     
     
@@ -49,7 +72,9 @@ class NewsfeedList extends Component{
 function mapStateToProps(state){
     return {
         newsfeedPage: state.newsfeedPage,
+        profileData: state.profilePage.profileData,
         eachPost: state.eachPost,
+        router: state.router,
     }
 }
 

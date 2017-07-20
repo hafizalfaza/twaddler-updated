@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { onTyping, onSubmitSearch } from "../redux/actions/navbar";
 import { push } from 'react-router-redux';
+import { Link } from 'react-router-dom';
 
 class NavBar extends Component {
     constructor(props){
@@ -15,15 +16,17 @@ class NavBar extends Component {
 
     _handleSubmitSearch = (e) => {
         e.preventDefault();
-        this.props.onSubmitSearch(this.props.navbar.searchInput);
-        this.props.navigateTo(`/search/str/${this.props.navbar.searchInput}`)
+        if(this.props.navbar.searchInput !== ''){
+             this.props.onSubmitSearch(this.props.navbar.searchInput);
+             this.props.navigateTo(`/search/str/${this.props.navbar.searchInput}`)
+        }       
     }
 
     render(){
         const userLinks = (<ul className="nav navbar-nav pull-right">
-                            <li><a href="#">Home</a></li>
+                            <li><Link to={"/"}>Home</Link></li>
                             <li><a href="#">Notifications</a></li>
-                            <li><a href="#">Profile</a></li>
+                            <li><Link to={`/profile/${this.props.auth.user.data.username}`}>Profile</Link></li>
                             <li><a href="#">Logout</a></li>
                             </ul>);
 
@@ -37,7 +40,7 @@ class NavBar extends Component {
             <nav className="navbar navbar-inverse">
                 <div className="container-fluid">
                     <div className="navbar-header">
-                    <a className="navbar-brand" href="#">Twaddler</a>
+                    <Link className="navbar-brand" to={"/"}>Twaddler</Link>
                     </div>
                     {this.props.auth.user.token ? userLinks : guestLinks}
                     <form className="navbar-form navbar-left" onSubmit={this._handleSubmitSearch}>

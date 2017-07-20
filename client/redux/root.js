@@ -11,12 +11,15 @@ import { postingContentEpic,
          commentEpic } from './observables/epics/newsfeedEpic';
 import { fetchCommentsEpic, likeEpic } from './observables/epics/eachPostEpic';
 
+import { profileEpic } from './observables/epics/profileEpic';
+
 import loginPage from './reducers/PageReducers/loginPage';
 import signupPage from './reducers/PageReducers/signupPage';
 import newsfeedPage from './reducers/PageReducers/newsfeedPage';
 import searchPage from './reducers/PageReducers/searchPage';
 import navbar from './reducers/navbar';
 import eachPost from './reducers/eachPost';
+import profilePage from './reducers/PageReducers/profilePage';
 
 export const rootEpic = combineEpics(
     loginEpic,
@@ -29,6 +32,7 @@ export const rootEpic = combineEpics(
     commentEpic,
     fetchCommentsEpic,
     likeEpic,
+    profileEpic,
 );
 
 const appReducer = combineReducers({
@@ -40,6 +44,7 @@ const appReducer = combineReducers({
     auth,
     navbar,
     eachPost,
+    profilePage,
 });
 
 export const rootReducer = (state, action) => {

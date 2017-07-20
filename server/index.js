@@ -18,6 +18,7 @@ import register from './routes/register';
 import posts from './routes/posts';
 import search from './routes/search';
 import users from './routes/users';
+import profile from './routes/profile';
 
 // Define app
 const app = express();
@@ -68,6 +69,7 @@ app.use('/api/register', register);
 app.use('/api/users', users);
 app.use('/api/posts', posts);
 app.use('/search', search);
+app.use('/profile', profile);
 
 // Get index page
 app.get('/*', (req, res, next) => {
