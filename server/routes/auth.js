@@ -16,9 +16,6 @@ router.post('/', (req, res, next) => {
 					id: user._id,
 					user: user,
                 }, config.jwtSecret);
-                req.session.userId=user._id;
-                req.session.username=user.username;
-                
                 res.json({token: 'JWT '+token, data: user});
 			}else{
 				res.status(401).json({errors: {form: 'Invalid credentials'}});

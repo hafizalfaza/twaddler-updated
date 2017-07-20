@@ -3,7 +3,9 @@ import { POSTING_CONTENT,
 		 FETCHING_INITIAL_POSTS, 
 		 INITIAL_POSTS_ABORTED,
 		 FETCHING_RECENT_POSTS,
-		 RECENT_POSTS_ABORTED } from '../../constants';
+		 RECENT_POSTS_ABORTED,
+		 SUBMITTING_COMMENT,
+		 SUBMITTING_COMMENT_ABORTED } from '../../constants';
 import { postingSuccess, 
 		 postingFailure,
 		 initialPostsSuccess,
@@ -11,6 +13,9 @@ import { postingSuccess,
 		 recentPostsSuccess,
 		 recentPostsFailure,
 		 getRecentPosts} from '../../actions/PageActions/newsfeedPage';
+import {
+		submittingCommentSuccess,
+		submittingCommentFailure } from '../../actions/eachPost';
 
 import 'rxjs';
 import { Observable } from 'rxjs/Observable';
@@ -41,4 +46,13 @@ export const recentPostsEpic = action$ =>
 				.map(res => recentPostsSuccess(res.data))
 				.takeUntil(action$.ofType(RECENT_POSTS_ABORTED))
 				.catch(error => Observable.of(recentPostsFailure(error)))
+		)
+
+export const commentEpic = action$ =>
+	action$.ofType(SUBMITTING_COMMENT)
+		.mergeMap(action => 
+			Observable.fromPromise(axios.post('/api/posts/comment/submit', action.payload))
+				.map(res => submittingCommentSuccess(res.data))
+				.takeUntil(action$.ofType(SUBMITTING_COMMENT_ABORTED))
+				.catch(error => Observable.of(submittingCommentFailure(error)))
 		)

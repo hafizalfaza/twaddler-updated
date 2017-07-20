@@ -4,11 +4,19 @@ import auth from './reducers/auth';
 import { routerReducer } from 'react-router-redux';
 import { loginEpic } from './observables/epics/loginEpic';
 import { signupEpic } from './observables/epics/signupEpic';
-import { postingContentEpic, initialPostsEpic, recentPostsEpic } from './observables/epics/newsfeedEpic';
+import { searchEpic, followEpic } from './observables/epics/searchEpic';
+import { postingContentEpic, 
+         initialPostsEpic, 
+         recentPostsEpic, 
+         commentEpic } from './observables/epics/newsfeedEpic';
+import { fetchCommentsEpic, likeEpic } from './observables/epics/eachPostEpic';
 
 import loginPage from './reducers/PageReducers/loginPage';
 import signupPage from './reducers/PageReducers/signupPage';
 import newsfeedPage from './reducers/PageReducers/newsfeedPage';
+import searchPage from './reducers/PageReducers/searchPage';
+import navbar from './reducers/navbar';
+import eachPost from './reducers/eachPost';
 
 export const rootEpic = combineEpics(
     loginEpic,
@@ -16,6 +24,11 @@ export const rootEpic = combineEpics(
     postingContentEpic,
     initialPostsEpic,
     recentPostsEpic,
+    searchEpic,
+    followEpic,
+    commentEpic,
+    fetchCommentsEpic,
+    likeEpic,
 );
 
 const appReducer = combineReducers({
@@ -23,7 +36,10 @@ const appReducer = combineReducers({
     loginPage,
     signupPage,
     newsfeedPage,
+    searchPage,
     auth,
+    navbar,
+    eachPost,
 });
 
 export const rootReducer = (state, action) => {

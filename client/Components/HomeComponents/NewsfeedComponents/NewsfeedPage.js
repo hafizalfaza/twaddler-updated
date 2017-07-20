@@ -17,9 +17,12 @@ class NewsfeedPage extends Component {
     }
 
     componentDidMount(){
-        this.props.getInitialPosts();
+        if(this.props.auth.loggedIn){
+             this.props.getInitialPosts(); 
+        }        
+        
         const intervalId = setInterval(this.getRecentPosts, 5000);
-        this.setState({intervalId})  
+        this.setState({intervalId})   
     }
 
     componentWillUnmount() {
@@ -38,7 +41,13 @@ class NewsfeedPage extends Component {
     }
 
     getRecentPosts(){
-         this.props.getRecentPosts(this.props.newsfeedPage.posts[0].postedAt);
+        let latestPost;
+        if(this.props.newsfeedPage.posts[0]){
+            latestPost = this.props.newsfeedPage.posts[0].postedAt
+        }else{
+            latestPost = this.props.auth.user.data.joinDate;
+        }         
+        this.props.getRecentPosts(latestPost);
     }
 
 
@@ -60,6 +69,7 @@ class NewsfeedPage extends Component {
 
 function mapStateToProps(state){
     return {
+        auth: state.auth,
         newsfeedPage: state.newsfeedPage,
     }
 }

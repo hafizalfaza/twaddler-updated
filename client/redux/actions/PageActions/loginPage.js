@@ -27,7 +27,10 @@ export function setToken(payload){
      const {data, token} = payload.data;
      localStorage.setItem('jwtToken', token);
      localStorage.setItem('user', JSON.stringify(data));
-     setAuthorizationToken(token); 
+     setAuthorizationToken(token);
+     return {
+         type: 'SET_TOKEN',
+     }
 }
 
 export function loginFailure(error){

@@ -10,7 +10,9 @@ import { NEWSFEED_PAGE_TYPING,
          RECENT_POSTS_SUCCESS,
          RECENT_POSTS_FAILURE,
          RECENT_POSTS_ABORTED,
-         REVEAL_COLLECTED_POSTS} from '../../constants';
+         REVEAL_COLLECTED_POSTS,
+         SUBMITTING_COMMENT_SUCCESS,
+         PROCESSING_LIKE_SUCCESS} from '../../constants';
 
 const initialNewsfeedPageState = {
     input: {
@@ -19,7 +21,6 @@ const initialNewsfeedPageState = {
     },
     isPosting: false,
     isForcingRecentPosts: false,
-    errors: null,
     isFetchingInitialPosts: false,
     posts: null,
     collectedPosts: null,
@@ -80,11 +81,12 @@ export default function newsfeedPage(state=initialNewsfeedPageState, action){
         case INITIAL_POSTS_FAILURE:
             return {
                 ...state,
-                error: action.error
+                error: action.error,
+                isFetchingInitialPosts: false,
             }
         case FETCHING_RECENT_POSTS:
             return state;
-            
+
         case RECENT_POSTS_SUCCESS:
             if(action.payload.recentPosts[0]){
                 if(state.isPosting){
@@ -124,6 +126,35 @@ export default function newsfeedPage(state=initialNewsfeedPageState, action){
                 posts: [...state.collectedPosts, ...state.posts]
             }
 
+        case SUBMITTING_COMMENT_SUCCESS:
+            const updatedPosts = [];
+            for(let i=0; i<state.posts.length;i++){
+                if(state.posts[i]._id.toString() === action.payload.postCommented._id.toString()){
+                    updatedPosts.push(action.payload.postCommented);
+                }else{
+                    updatedPosts.push(state.posts[i]);
+                }
+            }
+
+            return {
+                ...state,
+                posts: updatedPosts
+            } 
+        case PROCESSING_LIKE_SUCCESS:
+            const updatedLikePost = [];
+            for(let i=0; i<state.posts.length;i++){
+                if(state.posts[i]._id.toString() === action.payload.updatedPost._id.toString()){
+                    updatedLikePost.push(action.payload.updatedPost);
+                }else{
+                    updatedLikePost.push(state.posts[i]);
+                }
+            }
+
+            return {
+                ...state,
+                posts: updatedLikePost
+            } 
+            
         default: return state;
     }
 }

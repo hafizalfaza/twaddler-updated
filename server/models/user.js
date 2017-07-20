@@ -62,6 +62,16 @@ const UserSchema = mongoose.Schema({
     },
     tempPosts: {
         type: Array,
+    },
+    isFollowedByCurrentUser: {
+        type: Boolean,
+        required: true,
+        default: false,
+    },
+    isFollowingCurrentUser: {
+        type: Boolean,
+        required: true,
+        default: false,
     }
 });
 
@@ -81,9 +91,31 @@ export function getUserById(id, callback){
     User.findById(id, {following: 0, followers: 0, notifications: 0}, callback);
 }
 
+export function getUserByUsername(username, callback){
+	const query = {username: username};
+	User.findOne(query, {notifications: 0}, callback);
+}
+
+
 export function getUserByUsernameOrEmail(identifier, callback){
 	const query = [{username: identifier}, {email: identifier}];
 	User.findOne({
 		 $or: query
 	   }, {following: 0, followers: 0, notifications: 0}, callback);
+}
+
+export function updateFollowStatus(users, isFollowing, callback){
+    if(isFollowing){
+        User.update({_id: users.userRequested}, {$pull: {followers: users.userRequesting}})
+        .exec()
+        .then(res => User.update({_id: users.userRequesting}, {$pull: {following: users.userRequested}}))
+        .then(res => User.find({_id: users.userRequested}, {notifications: 0}, callback))
+        .catch(err => console.log(err));
+    }else{
+        User.update({_id: users.userRequested}, {$addToSet: {followers: users.userRequesting}})
+        .exec()
+        .then(res => User.update({_id: users.userRequesting}, {$addToSet: {following: users.userRequested}}))
+        .then(res => User.find({_id: users.userRequested}, {notifications: 0}, callback))
+        .catch(err => console.log(err));
+    }
 }

@@ -1,7 +1,8 @@
 import { AUTHENTICATION_SUCCESS, SET_CURRENT_USER } from '../constants';
 
 const initialAuthState = {
-    user: {}
+    user: {},
+    loggedIn: false,
 };
 
 export default function auth (state=initialAuthState, action) {
@@ -12,7 +13,8 @@ export default function auth (state=initialAuthState, action) {
             }
         case SET_CURRENT_USER:
             return {
-                user: action.payload
+                user: action.payload,
+                loggedIn: true,
             }
         default: return state;
      }

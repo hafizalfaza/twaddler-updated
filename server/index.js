@@ -16,6 +16,8 @@ import { initPassport } from './config/passport';
 import auth from './routes/auth';
 import register from './routes/register';
 import posts from './routes/posts';
+import search from './routes/search';
+import users from './routes/users';
 
 // Define app
 const app = express();
@@ -59,15 +61,13 @@ app.use(passport.session());
 
 initPassport(passport);
 
-app.use(session({secret: 'thebestwebsiteintheworld',
-        saveUninitialized: true,
-        resave: true}));
-
 app.use(expressValidator());
 
 app.use('/api/auth', auth);
 app.use('/api/register', register);
+app.use('/api/users', users);
 app.use('/api/posts', posts);
+app.use('/search', search);
 
 // Get index page
 app.get('/*', (req, res, next) => {

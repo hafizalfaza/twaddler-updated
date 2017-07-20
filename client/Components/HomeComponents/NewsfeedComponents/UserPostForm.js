@@ -15,7 +15,13 @@ class UserPostForm extends Component {
         e.preventDefault();
         const { input } = this.props.newsfeedPage;
         const { user } =  this.props.auth;
-        this.props.onSubmitPost({content: {text: input.textToPost.text, picUrl: input.picUrl}, postedBy: user.data._id, latestPost: this.props.newsfeedPage.posts[0].postedAt});   
+        let latestPost;
+        if(this.props.newsfeedPage.posts[0]){
+            latestPost = this.props.newsfeedPage.posts[0].postedAt
+        }else{
+            latestPost = this.props.auth.user.data.joinDate;
+        }     
+        this.props.onSubmitPost({content: {text: input.textToPost.text, picUrl: input.picUrl}, postedBy: user.data._id, latestPost});   
         this.props.clearInterval();
     }
 

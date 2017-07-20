@@ -9,6 +9,7 @@ import 'rxjs';
 import { Route } from 'react-router';
 import { setAuthorizationToken } from './utils/setAuthorizationToken';
 import { setCurrentUser } from './redux/actions/auth';
+import SearchPage from './Components/SearchComponents/SearchPage';
 
 const store = configureStore()
 
@@ -23,6 +24,7 @@ render(
     <div>      
         <Route exact path="/" component={App} />
         <Route exact path="/signup" component={SignupPage} />
+        <Route exact path="/search/str/:searchQuery" component={SearchPage} />
     </div>
 </Router>
 </Provider>, document.getElementById('app'));

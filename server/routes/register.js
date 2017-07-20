@@ -22,9 +22,7 @@ router.post('/', (req, res, next) => {
 
     req.getValidationResult().then((result) => {
         if(result.array()[0]){
-             req.session.errors = result.array();
-             req.session.success = false;
-             res.status(403).json({user: null, success: req.session.success, errors: req.session.errors});
+             res.status(403).json({user: null, success: false, errors: result.array()});
         }else{
             const {fullName, username, email, password} = req.body;
             const newUser = User({
@@ -36,12 +34,10 @@ router.post('/', (req, res, next) => {
 
             addUser(newUser, (err, user) => {
                 if(err){
-                    req.session.errors = err;
-                    res.status(403).json({user: user, success: req.session.success, errors: req.session.errors});
+                     err;
+                    res.status(403).json({user: user, success: false, errors: err});
                 }else{
-                    req.session.errors = null;
-                    req.session.success = true; 
-                    res.status(200).json({user: user, success: req.session.success, errors: req.session.errors});
+                    res.status(200).json({user: user, success: true, errors: null});
                 }
             })
             
